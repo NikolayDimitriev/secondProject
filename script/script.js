@@ -53,5 +53,5 @@ window.addEventListener('DOMContentLoaded', () => {
         }, 1000);
     }
 
-    countTimer('30 june 2020');
+    countTimer('1 jule 2020');
 });
