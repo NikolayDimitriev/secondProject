@@ -59,7 +59,9 @@ window.addEventListener('DOMContentLoaded', () => {
         const btnMenu = document.querySelector('.menu'),
             menu = document.querySelector('menu'),
             closeBtn = document.querySelector('.close-btn'),
-            menuItems = menu.querySelectorAll('ul>li');
+            menuItems = menu.querySelectorAll('ul>li'),
+            nextSlideBtn = document.querySelector('main>a'),
+            anchors = [...menu.querySelectorAll('li>a[href*="#"]')]; //все якоря
 
         const handlerMenu = () => {
             menu.classList.toggle('active-menu');
@@ -67,7 +69,26 @@ window.addEventListener('DOMContentLoaded', () => {
         btnMenu.addEventListener('click', handlerMenu);
         closeBtn.addEventListener('click', handlerMenu);
 
-        menuItems.forEach(item => item.addEventListener('click', handlerMenu));
+        menuItems.forEach(item => item.addEventListener('click', handlerMenu)); //закрытие меню после перехода
+
+        anchors.forEach(item => { //плавное перемешение к якорю
+            item.addEventListener('click', e => {
+                e.preventDefault(); //сбросили стандартную анимацию
+                const blockId = item.getAttribute('href'); //получаем ссылку на какой блок ссылкает
+                document.querySelector('' + blockId).scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                }); //прокручиваем скрол к объекту
+            });
+        });
+        nextSlideBtn.addEventListener('click', e => {
+            e.preventDefault();
+            const blockId = nextSlideBtn.getAttribute('href'); //получаем ссылку на какой блок ссылкает
+            document.querySelector('' + blockId).scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        });
 
     };
     toggleMenu();
