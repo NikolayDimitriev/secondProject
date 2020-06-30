@@ -52,6 +52,65 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         }, 1000);
     }
+    countTimer('2 jule 2020');
 
-    countTimer('1 jule 2020');
+    //Меню
+    const toggleMenu = () => {
+        const btnMenu = document.querySelector('.menu'),
+            menu = document.querySelector('menu'),
+            closeBtn = document.querySelector('.close-btn'),
+            menuItems = menu.querySelectorAll('ul>li');
+
+        const handlerMenu = () => {
+            menu.classList.toggle('active-menu');
+        };
+        btnMenu.addEventListener('click', handlerMenu);
+        closeBtn.addEventListener('click', handlerMenu);
+
+        menuItems.forEach(item => item.addEventListener('click', handlerMenu));
+
+    };
+    toggleMenu();
+
+    //popup
+    const togglePopUp = () => {
+        const popUp = document.querySelector('.popup'),
+            popUpContent = document.querySelector('.popup-content'),
+            popUpBtn = document.querySelectorAll('.popup-btn'),
+            popUpClose = document.querySelector('.popup-close'),
+            widthWindow = document.documentElement.clientWidth;
+
+        //страшная анимация
+        let count = 0;
+        let rideInterval;
+        const showPopUp = () => {
+            rideInterval = requestAnimationFrame(showPopUp);
+            count += 100;
+            if (count < (widthWindow - 150) / 2) { //грубо говоря середина, правда моего экрана)
+                popUpContent.style.left = count + 'px';
+            } else {
+                cancelAnimationFrame(rideInterval);
+            }
+        };
+        let animate = true;
+
+        popUpBtn.forEach(item => {
+            item.addEventListener('click', () => {
+                if (widthWindow > 768) {
+                    if (animate) {
+                        rideInterval = requestAnimationFrame(showPopUp);
+                        animate = false;
+                    } else {
+                        cancelAnimationFrame(rideInterval);
+                        animate = true;
+                    }
+                }
+                popUp.style.display = 'block';
+            });
+        });
+        popUpClose.addEventListener('click', () => {
+            popUp.style.display = 'none';
+        });
+    };
+    togglePopUp();
 });
