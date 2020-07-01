@@ -113,18 +113,15 @@ window.addEventListener('DOMContentLoaded', () => {
                 cancelAnimationFrame(rideInterval);
             }
         };
-        let animate = true;
+
 
         popUpBtn.forEach(item => {
             item.addEventListener('click', () => {
                 if (widthWindow > 768) {
-                    if (animate) {
-                        rideInterval = requestAnimationFrame(showPopUp);
-                        animate = false;
-                    } else {
-                        cancelAnimationFrame(rideInterval);
-                        animate = true;
-                    }
+                    rideInterval = requestAnimationFrame(showPopUp);
+                    count = 0;
+                } else {
+                    cancelAnimationFrame(rideInterval);
                 }
                 popUp.style.display = 'block';
             });
