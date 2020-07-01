@@ -56,38 +56,39 @@ window.addEventListener('DOMContentLoaded', () => {
 
     //Меню
     const toggleMenu = () => {
-        const btnMenu = document.querySelector('.menu'),
-            menu = document.querySelector('menu'),
-            closeBtn = document.querySelector('.close-btn'),
-            menuItems = menu.querySelectorAll('ul>li'),
-            nextSlideBtn = document.querySelector('main>a'),
-            anchors = [...menu.querySelectorAll('li>a[href*="#"]')]; //все якоря
+        const body = document.body,
+            menu = document.querySelector('menu');
+
 
         const handlerMenu = () => {
             menu.classList.toggle('active-menu');
         };
-        btnMenu.addEventListener('click', handlerMenu);
-        closeBtn.addEventListener('click', handlerMenu);
 
-        menuItems.forEach(item => item.addEventListener('click', handlerMenu)); //закрытие меню после перехода
+        body.addEventListener('click', event => {
+            event.preventDefault();
+            const target = event.target;
 
-        anchors.forEach(item => { //плавное перемешение к якорю
-            item.addEventListener('click', e => {
-                e.preventDefault(); //сбросили стандартную анимацию
-                const blockId = item.getAttribute('href'); //получаем ссылку на какой блок ссылкает
-                document.querySelector('' + blockId).scrollIntoView({
+            if (target.closest('.menu')) { //открытые/закрытие на кнопку меню
+                handlerMenu();
+            } else if (target.classList.contains('close-btn')) { //закрытие на кнопку
+                handlerMenu();
+            } else if (target.closest('menu') && target.tagName === 'A') {
+                const blockId = target.getAttribute('href');
+                document.querySelector(`${blockId}`).scrollIntoView({
                     behavior: "smooth",
                     block: "start"
-                }); //прокручиваем скрол к объекту
-            });
-        });
-        nextSlideBtn.addEventListener('click', e => {
-            e.preventDefault();
-            const blockId = nextSlideBtn.getAttribute('href'); //получаем ссылку на какой блок ссылкает
-            document.querySelector('' + blockId).scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
+                });
+                handlerMenu();
+            } else if (!target.classList.contains('active-menu') && menu.classList.contains('active-menu')) {
+                handlerMenu();
+            } else if (target.parentNode.id === '#next-slide-btn' && target.tagName === 'IMG') {
+                const blockId = target.parentNode.getAttribute('href');
+                document.querySelector(`${blockId}`).scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+            }
+
         });
 
     };
