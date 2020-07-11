@@ -1,4 +1,5 @@
 window.addEventListener('DOMContentLoaded', () => {
+    // eslint-disable-next-line strict
     'use strict';
     //Таймер
     function countTimer(deadline) {
@@ -271,30 +272,77 @@ window.addEventListener('DOMContentLoaded', () => {
     };
     slider();
 
-    const mouseOver = elem => {
-        const target = elem.target;
-        if (target.matches('.command__photo')) {
-            target.dataset.image = target.src;
-            target.src = target.dataset.img;
-        }
-    };
-    const mouseOut = elem => {
-        const target = elem.target;
-        if (target.matches('.command__photo')) {
-            target.src = target.dataset.image;
-        }
-    };
+    //работа с мелькими вещами
+    const littleThings = () => {
+        const mouseOver = elem => {
+            const target = elem.target;
+            if (target.matches('.command__photo')) {
+                target.dataset.image = target.src;
+                target.src = target.dataset.img;
+            }
+        };
+        const mouseOut = elem => {
+            const target = elem.target;
+            if (target.matches('.command__photo')) {
+                target.src = target.dataset.image;
+            }
+        };
 
-    //смена изображения при наведении
-    document.querySelector('.command').addEventListener('mouseover', mouseOver);
-    document.querySelector('.command').addEventListener('mouseout', mouseOut);
+        //смена изображения при наведении
+        document.querySelector('.command').addEventListener('mouseover', mouseOver);
+        document.querySelector('.command').addEventListener('mouseout', mouseOut);
 
-    //запрет ввода всего кроме цифр в калькуляторе
-    // eslint-disable-next-line max-len
-    const inputArray = [document.querySelector('.calc-square'), document.querySelector('.calc-count'), document.querySelector('.calc-day')];
-    inputArray.forEach(item => {
-        item.addEventListener('input', () => {
-            item.value = item.value.replace(/\D/, '');
+        //запрет ввода всего кроме цифр в калькуляторе
+        // eslint-disable-next-line max-len
+        const inputArray = [document.querySelector('.calc-square'), document.querySelector('.calc-count'), document.querySelector('.calc-day')];
+        inputArray.forEach(item => {
+            item.addEventListener('input', () => {
+                item.value = item.value.replace(/\D/, '');
+            });
         });
-    });
+    };
+    littleThings();
+
+    //калькулятор
+    const calc = (price = 100) => {
+        const calcBlock = document.querySelector('.calc-block'),
+            calcType = document.querySelector('.calc-type'),
+            calcSquare = document.querySelector('.calc-square'),
+            calcCount = document.querySelector('.calc-count'),
+            calcDay = document.querySelector('.calc-day'),
+            totalValue = document.getElementById('total');
+
+        const countSum = () => {
+            let total = 0,
+                countValue = 1,
+                dayValue = 1;
+            const typeValue = +calcType.options[calcType.selectedIndex].value,
+                squareValue = +calcSquare.value;
+
+            if (calcCount.value > 1) {
+                countValue += (calcCount.value - 1) / 10;
+            }
+
+            if (calcDay.value < 5 && calcDay.value) {
+                dayValue *= 2;
+            } else if (calcDay.value < 10 && calcDay.value) {
+                dayValue *= 1.5;
+            }
+
+            if (typeValue && squareValue) {
+                total = price * typeValue * squareValue * countValue * dayValue;
+            }
+            
+            totalValue.textContent = total;
+        };
+
+        calcBlock.addEventListener('change', event => {
+            const target = event.target;
+
+            if (target.matches('select') || target.matches('input')){
+                countSum();
+            }
+        });
+    };
+    calc(100);
 });
