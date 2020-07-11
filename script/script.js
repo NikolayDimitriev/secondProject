@@ -270,4 +270,31 @@ window.addEventListener('DOMContentLoaded', () => {
         startSlide(2000);
     };
     slider();
+
+    const mouseOver = elem => {
+        const target = elem.target;
+        if (target.matches('.command__photo')) {
+            target.dataset.image = target.src;
+            target.src = target.dataset.img;
+        }
+    };
+    const mouseOut = elem => {
+        const target = elem.target;
+        if (target.matches('.command__photo')) {
+            target.src = target.dataset.image;
+        }
+    };
+
+    //смена изображения при наведении
+    document.querySelector('.command').addEventListener('mouseover', mouseOver);
+    document.querySelector('.command').addEventListener('mouseout', mouseOut);
+
+    //запрет ввода всего кроме цифр в калькуляторе
+    // eslint-disable-next-line max-len
+    const inputArray = [document.querySelector('.calc-square'), document.querySelector('.calc-count'), document.querySelector('.calc-day')];
+    inputArray.forEach(item => {
+        item.addEventListener('input', () => {
+            item.value = item.value.replace(/\D/, '');
+        });
+    });
 });
