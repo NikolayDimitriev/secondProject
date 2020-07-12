@@ -53,7 +53,7 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         }, 1000);
     }
-    countTimer('13 jule 2020');
+    countTimer('14 jule 2020');
 
     //Меню
     const toggleMenu = () => {
@@ -318,7 +318,7 @@ window.addEventListener('DOMContentLoaded', () => {
     littleThings();
 
     //калькулятор
-    const calc = (price = 100) => {
+    const calc = (price = 1000) => {
         const calcBlock = document.querySelector('.calc-block'),
             calcType = document.querySelector('.calc-type'),
             calcSquare = document.querySelector('.calc-square'),
@@ -347,8 +347,25 @@ window.addEventListener('DOMContentLoaded', () => {
                 total = price * typeValue * squareValue * countValue * dayValue;
             }
 
-            totalValue.textContent = total;
+            // eslint-disable-next-line no-use-before-define
+            numAnimate(totalValue, +totalValue.textContent, total, 500);
         };
+
+        //анимация изменения цифр
+        const numAnimate = (totalValue, from, to, duration) => {
+            const elem = totalValue;
+            const start = Date.now();
+            let timerId = setTimeout(function tick() {
+                const now = Date.now() - start;
+                const progress = now / duration;
+                const result = Math.floor((to - from) * progress + from);
+                elem.textContent = progress < 1 ? result : to;
+
+                if (progress < 1) timerId = setTimeout(tick, 10);
+            }, 10);
+        };
+
+        // numAnimate('example', 0, 5000, 9000);
 
         calcBlock.addEventListener('change', event => {
             const target = event.target;
@@ -358,7 +375,7 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         });
     };
-    calc(100);
+    calc(1000);
 
     //send-ajax-form
     const sendForm = () => {
