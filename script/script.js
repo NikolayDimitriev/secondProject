@@ -309,7 +309,6 @@ window.addEventListener('DOMContentLoaded', () => {
         });
         //запрет ввода в инпуте "имя" и "сообщение" всего, кроме кириллицы и пробелов
         document.querySelectorAll('input[name="user_name"], input[name="user_message"]').forEach(item => {
-            console.log(item);
             item.addEventListener('input', () => {
                 item.value = item.value.replace(/[^а-я\s]/gi, '');
             });
@@ -360,63 +359,64 @@ window.addEventListener('DOMContentLoaded', () => {
     };
     calc(100);
 
-    //send-ajax-form
-    const sendForm = form => {
-        const errorMessage = 'Что-то пошло не так...',
-            loadMessage = 'Загрузка...',
-            successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
+//send-ajax-form
+const sendForm = () => {
+    const errorMessage = 'Что-то пошло не так...',
+        loadMessage = 'Загрузка...',
+        successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
 
-        const statusMessage = document.createElement('div');
-        statusMessage.style.cssText = 'font-size: 2rem;';
+    const form = document.getElementById('form1');
 
-        //функция запроса на сервер, только работает с сервером
-        const postData = (body, outputData, errorData) => {
-            const request = new XMLHttpRequest();
-            request.addEventListener('readystatechange', () => {
-                if (request.readyState !== 4) {
-                    return;
-                }
-                if (request.readyState === 200) {
-                    outputData();
-                } else {
-                    errorData(request.status);
-                }
-            });
-            request.open('POST', './server.php');
-            request.setRequestHeader('Content-Type', 'application/json');
-            request.send(JSON.stringify(body));
-        };
+    const statusMessage = document.createElement('div');
+    statusMessage.style.cssText = 'font-size: 2rem;';
 
-        form.addEventListener('submit', e => {
-            e.preventDefault();
-            form.appendChild(statusMessage);
-            statusMessage.textContent = loadMessage;
-            const formData = new FormData(form);
-            const body = {};
-            formData.forEach((val, key) => {
-                body[key] = val;
-            });
-
-            postData(body,
-                () => {
-                    statusMessage.textContent = successMessage;
-                },
-                error => {
-                    statusMessage.textContent = errorMessage;
-                    console.error(error);
-                });
-            //очистка инпутов
-            form.querySelectorAll('input').forEach(item => {
-                item.value = '';
-            });
+    
+    form.addEventListener('submit', e => {
+        
+        e.preventDefault();
+        form.appendChild(statusMessage);
+        statusMessage.textContent = loadMessage;
+        const formData = new FormData(form);
+        const body = {};
+        formData.forEach((val, key) => {
+            body[key] = val;
         });
 
-    };
+        // eslint-disable-next-line no-use-before-define
+        postData(body,
+            () => {
+                statusMessage.textContent = successMessage;
+            },
+            error => {
+                statusMessage.textContent = errorMessage;
+                console.error(error);
+            });
 
-    //подключения скрипта отправки данных ко всем формам
-    const formArray = [document.getElementById('form1'), document.getElementById('form2'),
-        document.getElementById('form3')];
-    formArray.forEach(item => {
-        sendForm(item);
+        //очистка инпутов
+        form.querySelectorAll('input').forEach(item => {
+            item.value = '';
+        });
     });
+
+    //функция запроса на сервер, только работает с сервером
+    const postData = (body, outputData, errorData) => {
+        const request = new XMLHttpRequest();
+        request.addEventListener('readystatechange', () => {
+            if (request.readyState !== 4) {
+                return;
+            }
+            if (request.readyState === 200) {
+                outputData();
+            } else {
+                errorData(request.status);
+            }
+        });
+        request.open('POST', './server.php');
+        request.setRequestHeader('Content-Type', 'application/json');
+        request.send(JSON.stringify(body));
+    };
+};
+
+//подключения скрипта отправки данных ко всем формам
+sendForm();
 });
