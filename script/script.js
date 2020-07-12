@@ -383,7 +383,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const statusMessage = document.createElement('img');
         statusMessage.src = './images/loader.gif';
         const successMessage = document.createElement('div');
-        successMessage.style.cssText = 'font-size: 2rem;';
+        successMessage.style.cssText = 'font-size: 2rem; color: white;';
         successMessage.textContent = 'Ваша заявка принята';
 
         //для каждой формы
