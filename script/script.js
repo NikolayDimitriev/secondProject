@@ -366,16 +366,11 @@ window.addEventListener('DOMContentLoaded', () => {
             loadMessage = 'Загрузка...',
             successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
 
-<<<<<<< HEAD
-=======
-        // const form = document.getElementById('form1');
->>>>>>> 3800a2d81b24442ae34574b7cf5f422acbbd230a
 
         const statusMessage = document.createElement('div');
         statusMessage.textContent = 'Тут будет текст';
         statusMessage.style.cssText = 'font-size: 2rem;';
 
-<<<<<<< HEAD
         //для каждой формы
         document.querySelectorAll('form').forEach(form => {
             form.addEventListener('submit', e => {
@@ -424,14 +419,6 @@ window.addEventListener('DOMContentLoaded', () => {
             request.setRequestHeader('Content-Type', 'application/json');
             request.send(JSON.stringify(body));
         };
-=======
-        document.querySelectorAll('form').forEach(form => {
-            form.addEventListener('submit', e => {
-                e.preventDefault();
-                console.log(e.target);
-            });
-        });
->>>>>>> 3800a2d81b24442ae34574b7cf5f422acbbd230a
     };
     sendForm();
 });
