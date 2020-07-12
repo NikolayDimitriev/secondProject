@@ -357,10 +357,11 @@ window.addEventListener('DOMContentLoaded', () => {
             const start = Date.now();
             let timerId = setTimeout(function tick() {
                 const now = Date.now() - start;
-                const progress = now / duration;
+                const progress = now / duration; //шаг
                 const result = Math.floor((to - from) * progress + from);
                 elem.textContent = progress < 1 ? result : to;
 
+                // eslint-disable-next-line no-unused-vars
                 if (progress < 1) timerId = setTimeout(tick, 10);
             }, 10);
         };
@@ -379,21 +380,17 @@ window.addEventListener('DOMContentLoaded', () => {
 
     //send-ajax-form
     const sendForm = () => {
-        const errorMessage = 'Что-то пошло не так...',
-            loadMessage = 'Загрузка...',
-            successMessage = 'Спасибо! Мы скоро с вами свяжемся!';
-
-
-        const statusMessage = document.createElement('div');
-        statusMessage.textContent = 'Тут будет текст';
-        statusMessage.style.cssText = 'font-size: 2rem;';
+        const statusMessage = document.createElement('img');
+        statusMessage.src = './images/loader.gif';
+        const successMessage = document.createElement('div');
+        successMessage.style.cssText = 'font-size: 2rem;';
+        successMessage.textContent = 'Ваша заявка принята';
 
         //для каждой формы
         document.querySelectorAll('form').forEach(form => {
             form.addEventListener('submit', e => {
                 e.preventDefault();
                 form.appendChild(statusMessage);
-                statusMessage.textContent = loadMessage;
 
                 const formData = new FormData(form);
                 const body = {};
@@ -403,9 +400,9 @@ window.addEventListener('DOMContentLoaded', () => {
 
                 // eslint-disable-next-line no-use-before-define
                 postData(body, () => {
-                    statusMessage.textContent = successMessage;
+                    form.removeChild(statusMessage);
+                    form.appendChild(successMessage);
                 }, error => {
-                    statusMessage.textContent = errorMessage;
                     console.error(error);
                 });
 
