@@ -399,12 +399,12 @@ window.addEventListener('DOMContentLoaded', () => {
                 });
 
                 // eslint-disable-next-line no-use-before-define
-                postData(body, () => {
-                    form.removeChild(statusMessage);
-                    form.appendChild(successMessage);
-                }, error => {
-                    console.error(error);
-                });
+                postData(body)
+                    .then(() => {
+                        form.removeChild(statusMessage);
+                        form.appendChild(successMessage);
+                    })
+                    .catch(error => console.error(error));
 
                 //через 3 секунды очищаем инпуты
                 setTimeout(() => {
@@ -417,22 +417,22 @@ window.addEventListener('DOMContentLoaded', () => {
         });
 
         //функция запроса на сервер
-        const postData = (body, outputData, errorData) => {
+        const postData = body => new Promise((resolse, reject) => {
             const request = new XMLHttpRequest();
             request.addEventListener('readystatechange', () => {
                 if (request.readyState !== 4) {
                     return;
                 }
                 if (request.status === 200) {
-                    outputData();
+                    resolse(request.status);
                 } else {
-                    errorData(request.status);
+                    reject(request.status);
                 }
             });
             request.open('POST', './server.php');
             request.setRequestHeader('Content-Type', 'application/json');
             request.send(JSON.stringify(body));
-        };
+        });
     };
     sendForm();
 });
