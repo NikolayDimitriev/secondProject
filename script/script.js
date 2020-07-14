@@ -400,7 +400,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
                 // eslint-disable-next-line no-use-before-define
                 postData(body)
-                    .then(() => {
+                    .then(response => {
+                        if (response.status !== 200) {
+                            throw new Error('status network not 200.');
+                        }
                         form.removeChild(statusMessage);
                         form.appendChild(successMessage);
                     })
@@ -417,22 +420,14 @@ window.addEventListener('DOMContentLoaded', () => {
         });
 
         //функция запроса на сервер
-        const postData = body => new Promise((resolse, reject) => {
-            const request = new XMLHttpRequest();
-            request.addEventListener('readystatechange', () => {
-                if (request.readyState !== 4) {
-                    return;
-                }
-                if (request.status === 200) {
-                    resolse(request.status);
-                } else {
-                    reject(request.status);
-                }
-            });
-            request.open('POST', './server.php');
-            request.setRequestHeader('Content-Type', 'application/json');
-            request.send(JSON.stringify(body));
+        const postData = body => fetch('./server.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(body)
         });
+
     };
     sendForm();
 });
