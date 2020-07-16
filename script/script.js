@@ -53,7 +53,7 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         }, 1000);
     }
-    countTimer('14 jule 2020');
+    countTimer('17 jule 2020');
 
     //Меню
     const toggleMenu = () => {
@@ -72,20 +72,22 @@ window.addEventListener('DOMContentLoaded', () => {
                 handlerMenu();
             } else if (target.classList.contains('close-btn')) { //закрытие на кнопку
                 handlerMenu();
-            } else if (target.closest('menu') && target.tagName === 'A') {
+            } else if (target.closest('menu') && target.tagName.toLowerCase() === 'a') {
                 event.preventDefault();
+
                 const blockId = target.getAttribute('href');
-                document.querySelector(`${blockId}`).scrollIntoView({
+                document.querySelector(blockId).scrollIntoView({
                     behavior: "smooth",
                     block: "start"
                 });
                 handlerMenu();
             } else if (!target.classList.contains('active-menu') && menu.classList.contains('active-menu')) {
                 handlerMenu();
-            } else if (target.parentNode.id === '#next-slide-btn' && target.tagName === 'IMG') {
+            } else if (target.parentNode.id === 'next-slide-btn' && target.tagName.toLowerCase() === 'img') {
                 event.preventDefault();
+
                 const blockId = target.parentNode.getAttribute('href');
-                document.querySelector(`${blockId}`).scrollIntoView({
+                document.querySelector(blockId).scrollIntoView({
                     behavior: "smooth",
                     block: "start"
                 });
@@ -302,10 +304,14 @@ window.addEventListener('DOMContentLoaded', () => {
             });
         });
 
+        //маска для ввода телефона
+        // eslint-disable-next-line no-undef
+        maskPhone('input[name="user_phone"]');
+
         //запрет ввода в инпуте "номера" всего кроме цифр и знака +
         document.querySelectorAll('input[name="user_phone"]').forEach(item => {
             item.addEventListener('input', () => {
-                item.value = item.value.replace(/[^\d+]/, '');
+                item.value = item.value.replace(/^[-()]\d/g, '');
             });
         });
         //запрет ввода в инпуте "имя" и "сообщение" всего, кроме кириллицы и пробелов
@@ -415,6 +421,11 @@ window.addEventListener('DOMContentLoaded', () => {
                         item.value = '';
                     });
                 }, 3000);
+
+                //через 7 секунд убирается запись об успешной отправке
+                setTimeout(() => {
+                    form.removeChild(successMessage);
+                }, 7000);
 
             });
         });
