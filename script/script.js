@@ -275,6 +275,33 @@ window.addEventListener('DOMContentLoaded', () => {
     };
     slider();
 
+    //слайдер карусель, подключение с отдeльного файла
+    const sliderCarousel = () => {
+        // eslint-disable-next-line no-undef
+        const carousel = new SliderCarousel({
+            main: '.companies-wrapper',
+            wrap: '.companies-hor',
+            slidersToShow: 4,
+            infinity: true,
+            responsive: [{
+                breakpoint: 1024,
+                slidersToShow: 3
+            },
+            {
+                breakpoint: 768,
+                slidersToShow: 2
+            },
+            {
+                breakpoint: 576,
+                slidersToShow: 1
+            }
+            ]
+        });
+
+        carousel.init();
+    };
+    sliderCarousel();
+
     //работа с мелькими вещами
     const littleThings = () => {
         const mouseOver = elem => {
