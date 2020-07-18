@@ -23,7 +23,7 @@ const toggleMenu = () => {
                 block: "start"
             });
             handlerMenu();
-        } else if (!target.classList.contains('active-menu') && menu.classList.contains('active-menu')) {
+        } else if (!target.classList.contains('active-menu') && menu.classList.contains('active-menu') && !target.matches('li')) {
             handlerMenu();
         } else if (target.parentNode.id === 'next-slide-btn' && target.tagName.toLowerCase() === 'img') {
             event.preventDefault();

@@ -21,7 +21,7 @@ import calc from './modules/calc';
 import sendForm from './modules/sendForm';
 
 //Таймер
-countTimer('19 jule 2020');
+countTimer('20 jule 2020');
 
 //Меню
 toggleMenu();

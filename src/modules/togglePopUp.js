@@ -1,8 +1,13 @@
 const togglePopUp = () => {
     const popUp = document.querySelector('.popup'),
         popUpContent = document.querySelector('.popup-content'),
-        popUpBtn = document.querySelectorAll('.popup-btn'),
+        popUpBtn = document.querySelectorAll('.popup-btn');
+
+    let widthWindow = document.documentElement.clientWidth;
+
+    window.addEventListener('resize', () => {
         widthWindow = document.documentElement.clientWidth;
+    });
 
     //страшная анимация
     let count = 0;
@@ -10,7 +15,7 @@ const togglePopUp = () => {
     const showPopUp = () => {
         rideInterval = requestAnimationFrame(showPopUp);
         count += 100;
-        if (count < (widthWindow - 150) / 2) { //грубо говоря середина, правда моего экрана)
+        if (count < (widthWindow - 200) / 2) {
             popUpContent.style.left = count + 'px';
         } else {
             cancelAnimationFrame(rideInterval);
@@ -23,7 +28,7 @@ const togglePopUp = () => {
                 rideInterval = requestAnimationFrame(showPopUp);
                 count = 0;
             } else {
-                cancelAnimationFrame(rideInterval);
+                popUpContent.style.left = ((widthWindow - 250) / 2) + 'px';
             }
             popUp.style.display = 'block';
         });
