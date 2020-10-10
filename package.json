@@ -23,7 +23,7 @@
     "@babel/preset-env": "^7.10.4",
     "babel-loader": "^8.1.0",
     "path": "^0.12.7",
-    "webpack": "^4.43.0",
+    "webpack": "^4.44.2",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0"
   },
@@ -35,5 +35,6 @@
     "formdata-polyfill": "^3.0.20",
     "mdn-polyfills": "^5.20.0",
     "nodelist-foreach-polyfill": "^1.2.0"
-  }
+  },
+  "main": "webpack.config.js"
 }
